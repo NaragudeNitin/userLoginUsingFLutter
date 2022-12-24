@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "838829157638",
+    "project_id": "signupproject-fce09",
+    "storage_bucket": "signupproject-fce09.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838829157638:android:448a18272d7181583e0287",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_5_login_logout_signup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838829157638-8e5ec00doppu27hfkbuacedk9cj7ija8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYd7bBB_8LAZ-FZ9DcZaOj0eCdQikOWZc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838829157638-8e5ec00doppu27hfkbuacedk9cj7ija8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
