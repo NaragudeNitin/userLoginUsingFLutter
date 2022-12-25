@@ -44,19 +44,24 @@ class _RegisterPageState extends State<RegisterPage> {
       password: _passwordController.text.trim(),);
 
       //add user details
+      addUserDetails(
+        _firstNameController.text.trim(), 
+        _lastNameController.text.trim(), 
+        int.parse(_ageController.text.trim()), 
+        _emailController.text.trim());
 
     }
   }
 
-  Future addUserDetails() async {
+  Future addUserDetails(String firstName, String lastName, int age, String email) async {
 
-    FirebaseFirestore.instance.collection("users").doc();
-/*     await FirebaseFirestore.instance.collection('users').add({
-      'first name' : ,
-      'last name': ,
-      'age' : ,
-      'email' : ,
-    }); */
+    // FirebaseFirestore.instance.collection("users").doc();
+    await FirebaseFirestore.instance.collection('users').add({
+      'first name' : firstName,
+      'last name': lastName,
+      'age' : age,
+      'email' : email,
+    });
   }
 
   bool passwordConfirm(){
