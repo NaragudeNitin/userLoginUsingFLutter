@@ -1,5 +1,4 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:flutter_application_5_login_logout_signup/pages/login_page.dart';
 import 'package:flutter_application_5_login_logout_signup/pages/register_page.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class _AuthPageState extends State<AuthPage> {
 
   void toggleScreens(){
     setState(() {
-      showLoginPage = !showLoginPage;
+      showLoginPage = !showLoginPage; //this line checks user is logged in or not
     });
   }
 

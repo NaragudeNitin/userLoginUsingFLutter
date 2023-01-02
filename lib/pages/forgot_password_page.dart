@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -33,6 +32,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       });
 
     } on FirebaseAuthException catch (e) {
+      // ignore: avoid_print
       print(e);
       showDialog(
         context: context, 

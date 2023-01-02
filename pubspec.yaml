@@ -39,6 +39,11 @@ dependencies:
   firebase_auth: ^4.2.2
   firebase_core: ^2.4.0
   cloud_firestore: ^4.3.0
+  shared_preferences: ^2.0.15
+  google_sign_in: ^5.4.2
+  flutter_facebook_auth: ^5.0.7
+  firebase_storage: ^11.0.10
+  image_picker: ^0.8.6
 
 dev_dependencies:
   flutter_test:

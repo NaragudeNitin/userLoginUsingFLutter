@@ -1,31 +1,82 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5_login_logout_signup/pages/forgot_password_page.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
+// late final String finalEmail;
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
-  const LoginPage({Key? key, required this.showRegisterPage}):super(key: key);
+  const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   //text controllers
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future SignIn() async{
-
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text.trim(), 
-      password: _passwordController.text.trim());
-   
+  @override
+  void initState() {
+    super.initState();
   }
 
-  void dispose(){
+  //Google login
+  Future<GoogleSignInAccount?>? performGoogleSignIn() {
+    try {
+      return GoogleSignIn().signIn();
+    } catch (err, stk) {
+      log(err.toString());
+      log(stk.toString());
+      return null;
+    }
+  }
+
+/*   //facebook login
+  Future<LoginResult?>? facebookSignIn() {
+    try {
+      return FacebookAuth.i.login();
+    } catch (err, stk) {
+      log(err.toString());
+      log(stk.toString());
+      return null;
+    }
+  } */
+
+//no need to use this block of code this block contains
+//code for shared  preferences
+/*   Future getValidationData() async{
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var obtainedEmail = sharedPreferences.getString("email");
+    setState(() {
+      finalEmail = obtainedEmail!;
+    });
+    print(finalEmail);
+  }
+ */
+
+  Future signIn() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+    } on FirebaseAuthException {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const AlertDialog(
+              content: Text("incorrect password or email address!!"),
+            );
+          });
+    }
+  }
+
+  @override
+  void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -33,8 +84,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
@@ -42,35 +91,42 @@ class _LoginPageState extends State<LoginPage> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children:  <Widget>[
-          
-                const Icon(Icons.phone_android,
-                size: 100,),
-          
-                //heading
-                const SizedBox(height: 55,),
-                const Text("Welcome to my application!!!",
-                //style: GoogleFonts.bebasNeue(),
-                style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold
+              children: <Widget>[
+                const Icon(
+                  Icons.phone_android,
+                  size: 100,
                 ),
-                textAlign: TextAlign.center,),
-                const SizedBox(height: 10,),
-                const Text("This application contaIns sign in button and sign out button"),
-                
+
+                //heading
+                const SizedBox(
+                  height: 55,
+                ),
+                const Text(
+                  "Welcome to my application!!!",
+                  style: TextStyle(
+                      color: Colors.blueAccent,
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                    "This application contaIns sign in button and sign out button"),
+
                 //email textfield
-                const SizedBox(height: 50,),
+                const SizedBox(
+                  height: 50,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8.0)
-                    ),
-                    child:  Padding(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(8.0)),
+                    child: Padding(
                       padding: const EdgeInsets.only(left: 20),
                       child: TextField(
                         controller: _emailController,
@@ -82,18 +138,19 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                
+
                 //password textfield
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8.0)
-                    ),
-                    child:  Padding(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(8.0)),
+                    child: Padding(
                       padding: const EdgeInsets.only(left: 20),
                       child: TextField(
                         controller: _passwordController,
@@ -108,67 +165,120 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 //forgot password
-                const SizedBox(height:15.0),
+                const SizedBox(height: 15.0),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget> [
+                    children: <Widget>[
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return ForgotPasswordPage();
-                          },),);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const ForgotPasswordPage();
+                              },
+                            ),
+                          );
                         },
-                        child: const Text("Forgot password?",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),),
+                        child: const Text(
+                          "Forgot password?",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
-                
+
                 //sign in button
-          
-                 const SizedBox(height: 20,),
-                 Padding(
-                   padding: const EdgeInsets.symmetric(horizontal: 105),
-                   child: GestureDetector(
-                    onTap: SignIn,
-                     child: Container(
+
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 105),
+                  child: GestureDetector(
+                    onTap: signIn,
+                    child: Container(
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        color: Colors.deepPurpleAccent,
-                        borderRadius: BorderRadius.circular(12)),
+                          color: Colors.deepPurpleAccent,
+                          borderRadius: BorderRadius.circular(12)),
                       child: const Center(
-                        child: Text("Sign In",
-                        style: TextStyle(color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14),)),
-                     ),
-                   ),
-                 ),
-                SizedBox(height: 10,),
+                          child: Text(
+                        "Sign In",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14),
+                      )),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+
                 //not a user? register now
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget> [
-                     const Text("new user? ",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),),
+                  children: <Widget>[
+                    const Text(
+                      "new user? ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     GestureDetector(
                       onTap: () {
                         widget.showRegisterPage();
                       },
-                      child:  const Text("register now",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),),
-                    )
+                      child: const Text(
+                        "register now",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    //google sign in option
+                    MaterialButton(
+                      onPressed: () async {
+                        performGoogleSignIn();
+                        /* final result = await FirebaseAuth.performGoogleSignIn();
+                        if (result != null) {
+                          log(result.email);
+                        } */
+
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("Signin with Google", 
+                        style: TextStyle(
+                          color: Colors.blueAccent,
+                        ),),
+                      ),
+                    ),
+
+                    //facebook sign in option
+                    /*                   TextButton(
+                      onPressed: () async {
+                        final result =
+                            await firebase.facebookSignIn();
+                        if (result != null &&
+                            result.status == LoginStatus.success) {
+                          final data =
+                              await FacebookAuth.instance.getUserData();
+                          log(data.toString());
+                        }
+                      },
+                      child: const Text("Signin with Facebook"),
+                    ), */
                   ],
                 )
               ],
@@ -177,8 +287,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-
-
-
   }
 }
