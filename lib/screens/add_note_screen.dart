@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5_login_logout_signup/pages/home_page.dart';
 
@@ -26,10 +26,19 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   // ignore: non_constant_identifier_names
   Future AddTaskDetails(String noteTitle, String noteDetails) async {
-    await FirebaseFirestore.instance.collection('tasks').add({
-      'title': noteTitle,
+    CollectionReference ref = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection(
+            "tasks");
+
+    var data = {
+      'title': noteTitle, 
       'description': noteDetails,
-    });
+      'created': DateTime.now(),
+      };
+
+    ref.add(data);
   }
 
   @override
@@ -41,7 +50,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -62,7 +70,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
+                      child: TextFormField(
                         controller: _titleController,
                         decoration: const InputDecoration(
                           hintText: "Note title",
@@ -86,7 +94,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
+                      child: TextFormField(
                         controller: _textController,
                         decoration: const InputDecoration(
                           hintText: "Note descriptiion ",

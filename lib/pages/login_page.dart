@@ -26,13 +26,23 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   //Google login
-  Future<GoogleSignInAccount?>? performGoogleSignIn() {
+  Future<void> performGoogleSignIn() async {
     try {
-      return GoogleSignIn().signIn();
+      final googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (err, stk) {
       log(err.toString());
       log(stk.toString());
-      return null;
     }
   }
 
@@ -254,14 +264,15 @@ class _LoginPageState extends State<LoginPage> {
                         if (result != null) {
                           log(result.email);
                         } */
-
                       },
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: Text("Signin with Google", 
-                        style: TextStyle(
-                          color: Colors.blueAccent,
-                        ),),
+                        child: Text(
+                          "Signin with Google",
+                          style: TextStyle(
+                            color: Colors.blueAccent,
+                          ),
+                        ),
                       ),
                     ),
 

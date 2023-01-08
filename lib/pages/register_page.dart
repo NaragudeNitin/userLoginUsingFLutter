@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_5_login_logout_signup/screens/profile_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_application_5_login_logout_signup/readdata/storage_service.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -18,6 +22,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _ageController = TextEditingController();
+
+  Uint8List? image;
 
   @override
   void dispose() {
@@ -42,25 +48,34 @@ class _RegisterPageState extends State<RegisterPage> {
       );
 
       //add user details
-      addUserDetails(
+      await addUserDetails(
           _firstNameController.text.trim(),
           _lastNameController.text.trim(),
           int.parse(_ageController.text.trim()),
           _emailController.text.trim());
     }
-    setState(() {
-      Navigator.pop(context);
-    });
+
+    // if (mounted) {
+    //  Navigator.pop(context);
+    // }
+
+    // setState(() {
+    //   Navigator.pop(context);
+    // });
   }
 
-  Future addUserDetails(
+  Future<void> addUserDetails(
       String firstName, String lastName, int age, String email) async {
+    final imageUrl =
+        await StorageMethod().uploadImageStorage("profileImage", image!);
+
     // FirebaseFirestore.instance.collection("users").doc();
     await FirebaseFirestore.instance.collection('users').add({
       'first name': firstName,
       'last name': lastName,
       'age': age,
       'email': email,
+      'imageUrl': imageUrl,
     });
   }
 
@@ -73,6 +88,23 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      image = im;
+    });
+  }
+
+  pickImage(ImageSource source) async {
+    final ImagePicker imagePicker = ImagePicker();
+    XFile? file = await imagePicker.pickImage(source: source);
+
+    if (file != null) {
+      return await file.readAsBytes();
+    }
+    stdout.writeln('No Image Selected');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +115,30 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                GestureDetector(
+                Stack(
+                  children: [
+                    image != null
+                        ? CircleAvatar(
+                            radius: 64,
+                            backgroundImage: MemoryImage(image!),
+                          )
+                        : const CircleAvatar(
+                            radius: 64,
+                            backgroundImage: NetworkImage(
+                                'https://picsum.photos/id/237/200/300'),
+                          ),
+                    Positioned(
+                        bottom: -10,
+                        left: 80,
+                        child: IconButton(
+                          onPressed: selectImage,
+                          icon: const Icon(Icons.add_a_photo),
+                          color: Colors.white,
+                        ))
+                  ],
+                ),
+
+                /* GestureDetector(
                   onTap: () {
                     Navigator.push(
                             context,
@@ -104,8 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ],
                   ),
                  
-                ),
-                
+                ), */
 
                 //heading
                 const SizedBox(
