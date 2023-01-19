@@ -14,12 +14,12 @@ class GetUserName extends StatelessWidget {
       future: users.doc(documentId).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data =
+          Map<String, dynamic> datai =
               snapshot.data!.data() as Map<String, dynamic>;
-          return Text(" ${data['first name']}"
+          return Text(" ${datai['first name']}"
               " "
-              "${data['last name']},"
-              "${data['age']} years old");
+              "${datai['last name']},"
+              "${datai['age']} years old");
         }
         return const Text("loading...");
       },
