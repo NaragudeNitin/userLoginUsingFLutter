@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'notification_screen.dart';
+
 class UpdateNoteScreen extends StatefulWidget {
   final Map data1;
   final String time;
@@ -13,16 +15,16 @@ class UpdateNoteScreen extends StatefulWidget {
 }
 
 class _UpdateNoteScreenState extends State<UpdateNoteScreen> {
-
-TextEditingController titletexteditingController = TextEditingController();
-TextEditingController descriptiontexteditingController = TextEditingController();
+  TextEditingController titletexteditingController = TextEditingController();
+  TextEditingController descriptiontexteditingController =
+      TextEditingController();
 
   bool edit = false;
   GlobalKey<FormState> key = GlobalKey<FormState>();
 
   @override
   void initState() {
-    titletexteditingController.text =  widget.data1['title'];
+    titletexteditingController.text = widget.data1['title'];
     descriptiontexteditingController.text = widget.data1['description'];
     super.initState();
   }
@@ -103,6 +105,33 @@ TextEditingController descriptiontexteditingController = TextEditingController()
                         //
                         const SizedBox(
                           width: 8.0,
+                        ),
+
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SetNotification(
+                                    title: 'Add Notification',
+                                  ),
+                                ));
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              Colors.grey[700],
+                            ),
+                            padding: MaterialStateProperty.all(
+                              const EdgeInsets.symmetric(
+                                horizontal: 15.0,
+                                vertical: 8.0,
+                              ),
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.notification_add,
+                            size: 24.0,
+                          ),
                         ),
                         //
                         ElevatedButton(
@@ -217,7 +246,10 @@ TextEditingController descriptiontexteditingController = TextEditingController()
     if (key.currentState!.validate()) {
       // TODo : showing any kind of alert that new changes have been saved
       await widget.ref.update(
-        {'title': titletexteditingController.text, 'description': descriptiontexteditingController.text},
+        {
+          'title': titletexteditingController.text,
+          'description': descriptiontexteditingController.text
+        },
       );
     }
   }

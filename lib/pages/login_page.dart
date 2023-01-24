@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -45,29 +43,6 @@ class _LoginPageState extends State<LoginPage> {
       log(stk.toString());
     }
   }
-
-/*   //facebook login
-  Future<LoginResult?>? facebookSignIn() {
-    try {
-      return FacebookAuth.i.login();
-    } catch (err, stk) {
-      log(err.toString());
-      log(stk.toString());
-      return null;
-    }
-  } */
-
-//no need to use this block of code this block contains
-//code for shared  preferences
-/*   Future getValidationData() async{
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var obtainedEmail = sharedPreferences.getString("email");
-    setState(() {
-      finalEmail = obtainedEmail!;
-    });
-    print(finalEmail);
-  }
- */
 
   Future signIn() async {
     try {
@@ -260,10 +235,6 @@ class _LoginPageState extends State<LoginPage> {
                     MaterialButton(
                       onPressed: () async {
                         performGoogleSignIn();
-                        /* final result = await FirebaseAuth.performGoogleSignIn();
-                        if (result != null) {
-                          log(result.email);
-                        } */
                       },
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
@@ -275,21 +246,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-
-                    //facebook sign in option
-                    /*                   TextButton(
-                      onPressed: () async {
-                        final result =
-                            await firebase.facebookSignIn();
-                        if (result != null &&
-                            result.status == LoginStatus.success) {
-                          final data =
-                              await FacebookAuth.instance.getUserData();
-                          log(data.toString());
-                        }
-                      },
-                      child: const Text("Signin with Facebook"),
-                    ), */
                   ],
                 )
               ],

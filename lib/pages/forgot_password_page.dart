@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 
@@ -13,34 +12,34 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _emailController = TextEditingController();
 
   @override
-  void dispose(){
+  void dispose() {
     _emailController.dispose();
     super.dispose();
   }
 
-  Future passwordReset() async{
+  Future passwordReset() async {
     try {
-      await FirebaseAuth.instance.
-      sendPasswordResetEmail(email: _emailController.text.trim());
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text.trim());
 
-          showDialog(
-        context: context, 
-        builder: (context){
-        return const AlertDialog(
-          content: Text("Password reset link is sent please check email inbox"),
-        );
-      });
-
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const AlertDialog(
+              content:
+                  Text("Password reset link is sent please check email inbox"),
+            );
+          });
     } on FirebaseAuthException catch (e) {
       // ignore: avoid_print
       print(e);
       showDialog(
-        context: context, 
-        builder: (context){
-        return AlertDialog(
-          content: Text(e.message.toString()),
-        );
-      });
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(e.message.toString()),
+            );
+          });
     }
   }
 
@@ -51,14 +50,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           const Padding(
-             padding: EdgeInsets.symmetric(horizontal: 25),
-             child: Text(
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25),
+            child: Text(
               "Enter your email and we will send you password reset link",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20),
+            ),
           ),
-           ),
 
           //email textfield
           const SizedBox(

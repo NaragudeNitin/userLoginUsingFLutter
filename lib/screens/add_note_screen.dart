@@ -29,14 +29,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     CollectionReference ref = FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection(
-            "tasks");
+        .collection("tasks");
 
     var data = {
-      'title': noteTitle, 
+      'title': noteTitle,
       'description': noteDetails,
       'created': DateTime.now(),
-      };
+    };
 
     ref.add(data);
   }
@@ -52,49 +51,51 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                //note title field
-                const SizedBox(
-                  height: 50,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(8.0)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextFormField(
-                        controller: _titleController,
-                        decoration: const InputDecoration(
-                          hintText: "Note title",
-                          border: InputBorder.none,
-                        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              //note title field
+              // const SizedBox(
+              //   height: 50,
+              // ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 152, 145, 145),
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(8.0)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: TextFormField(
+                      controller: _titleController,
+                      decoration: const InputDecoration(
+                        hintText: "Note title",
+                        border: InputBorder.none,
                       ),
                     ),
                   ),
                 ),
+              ),
 
-                //note description
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
+              //note description
+              const SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: const Color.fromARGB(255, 152, 145, 145),
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextFormField(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: TextField(
+                        maxLines: null,
+                        // expands: true,
                         controller: _textController,
                         decoration: const InputDecoration(
                           hintText: "Note descriptiion ",
@@ -104,37 +105,37 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     ),
                   ),
                 ),
+              ),
 
-                //add task button
+              //add task button
 
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 105),
-                  child: GestureDetector(
-                    onTap: AddText,
-                    child: Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                          color: Colors.deepPurpleAccent,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: const Center(
-                          child: Text(
-                        "Add Note",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
-                      )),
-                    ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 105),
+                child: GestureDetector(
+                  onTap: AddText,
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: Colors.deepPurpleAccent,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: const Center(
+                        child: Text(
+                      "Add Note",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    )),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
           ),
         ),
       ),

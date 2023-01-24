@@ -137,30 +137,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         ))
                   ],
                 ),
-
-                /* GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const ProfileScreen();
-                              },
-                            ),
-                          );
-                  },
-                  child: Column(
-                    children: const [
-                      Icon(
-                        Icons.person,
-                        size: 50,
-                      ),
-                      Text("upload profile image!!"),
-                    ],
-                  ),
-                 
-                ), */
-
                 //heading
                 const SizedBox(
                   height: 10,
