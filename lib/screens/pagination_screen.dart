@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +45,7 @@ class _PaginatedListState extends State<PaginatedList> {
       if (lastDocument == null) {
         querySnapshot =
             (await ref.limit(10).get()) as QuerySnapshot<Map<String, dynamic>>?;
+
       } else {
         querySnapshot = (await ref
             .limit(10)
@@ -52,13 +55,12 @@ class _PaginatedListState extends State<PaginatedList> {
 
       lastDocument = querySnapshot!.docs.last;
       list.addAll(querySnapshot.docs.map((e) => e.data()));
-      isLoadingData = false;
-      setState(() {});
+      setState(() {isLoadingData = false;});
       if (querySnapshot.docs.length < 10) {
         isMoreData = false;
       }
     } else {
-      print("No more data");
+      log("No more data");
     }
   }
 
