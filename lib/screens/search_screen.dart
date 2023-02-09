@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_5_login_logout_signup/model/note.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -11,17 +12,45 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   List searchResult = [];
+  List<Note> items = [];
+  List<Note> filterNotes = [];
 
-  void searchFromFirebase(String query) async {
+  @override
+  void initState() {
+    fetchNotes();
+    super.initState();
+  }
+
+  void fetchNotes()async{
     final result = await FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('tasks')
-        .where('title', isGreaterThanOrEqualTo: query)
         .get();
 
+        print(result.docs.length);
+        
+
+        final documents = result.docs;
+        for (QueryDocumentSnapshot element in documents) {
+        
+          print(".....................//////");
+          final data = element.data() as Map<String, dynamic>;
+
+          final title = data['title'];
+          final description = data['description'];
+          final note = Note(title: title, description: description);
+          items.add(note);
+
+          // print(data['title']);
+
+        }
+  }
+
+  void searchFromFirebase(String query) async {
+    
     setState(() {
-      searchResult = result.docs.map((e) => e.data()).toList();
+      filterNotes = items.where((note) => note.title.contains(query)).toList();
     });
   }
 
@@ -48,11 +77,12 @@ class _SearchScreenState extends State<SearchScreen> {
         ],
       ),
       body: ListView.builder(
-        itemCount: searchResult.length,
+        itemCount: filterNotes.length,
         itemBuilder: (context, index) {
+          final note = filterNotes[index];
           return ListTile(
-            title: Text(searchResult[index]['title']),
-            subtitle: Text(searchResult[index]['description']),
+            title: Text(note.title),
+            subtitle: Text(note.description),
           );
         },
       ),

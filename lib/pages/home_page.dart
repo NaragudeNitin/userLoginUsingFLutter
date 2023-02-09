@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5_login_logout_signup/screens/add_note_screen.dart';
+import 'package:flutter_application_5_login_logout_signup/screens/pagination_screen.dart';
 import 'package:flutter_application_5_login_logout_signup/screens/search_screen.dart';
 import 'package:flutter_application_5_login_logout_signup/views/list_view.dart';
 
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   final user = FirebaseAuth.instance.currentUser!;
   @override
   void initState() {
-    // getTaskDetails();
+    // getTas
     super.initState();
   }
 
@@ -111,7 +112,7 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Container(
           margin: const EdgeInsets.all(10),
-          child: const ListViewPage(),
+          child: const PaginatedList(),
         ),
       ),
     );

@@ -53,7 +53,12 @@ class _PaginatedListState extends State<PaginatedList> {
             .get()) as QuerySnapshot<Map<String, dynamic>>?;
       }
 
-      lastDocument = querySnapshot!.docs.last;
+      if (querySnapshot!.docs.isNotEmpty) {
+        print("...........................");
+        lastDocument = querySnapshot.docs.last;
+      }
+
+      
       list.addAll(querySnapshot.docs.map((e) => e.data()));
       setState(() {isLoadingData = false;});
       if (querySnapshot.docs.length < 10) {
