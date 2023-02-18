@@ -45,7 +45,6 @@ class _PaginatedListState extends State<PaginatedList> {
       if (lastDocument == null) {
         querySnapshot =
             (await ref.limit(10).get()) as QuerySnapshot<Map<String, dynamic>>?;
-
       } else {
         querySnapshot = (await ref
             .limit(10)
@@ -54,13 +53,14 @@ class _PaginatedListState extends State<PaginatedList> {
       }
 
       if (querySnapshot!.docs.isNotEmpty) {
-        print("...........................");
+        // print("...........................");
         lastDocument = querySnapshot.docs.last;
       }
 
-      
       list.addAll(querySnapshot.docs.map((e) => e.data()));
-      setState(() {isLoadingData = false;});
+      setState(() {
+        isLoadingData = false;
+      });
       if (querySnapshot.docs.length < 10) {
         isMoreData = false;
       }
@@ -78,8 +78,26 @@ class _PaginatedListState extends State<PaginatedList> {
             controller: controller,
             itemCount: list.length,
             itemBuilder: (context, index) {
+              // Map data = index.data!.docs[index].data() as Map;
+              // DateTime? myDateTime = data['created'].toDate();
+              // String formatedDateTime =
+              //     DateFormat.yMMMd().add_jm().format(myDateTime!);
               return ListTile(
-                onTap: () {},
+                onTap: () {
+                  // Navigator.of(context)
+                  //     .push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) => UpdateNoteScreen(
+                  //       list[index],
+                  //       formatedDateTime,
+                  //       snapshot.data!.docs[index].reference,
+                  //     ),
+                  //   ),
+                  // )
+                  //     .then((value) {
+                  //   setState(() {});
+                  // });
+                },
                 title: Text(list[index]['title'].toString()),
                 subtitle: Text(list[index]['description'].toString()),
               );

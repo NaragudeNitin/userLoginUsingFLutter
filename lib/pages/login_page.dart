@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5_login_logout_signup/pages/forgot_password_page.dart';
-import 'package:flutter_application_5_login_logout_signup/pages/home_page.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 // late final String finalEmail;
@@ -72,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: const Color.fromARGB(255, 97, 89, 89),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -80,16 +79,16 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Icon(
-                  Icons.phone_android,
+                  Icons.menu_book,
                   size: 100,
                 ),
 
                 //heading
                 const SizedBox(
-                  height: 55,
+                  height: 30,
                 ),
                 const Text(
-                  "Welcome to my application!!!",
+                  "Welcome to Notes application!!!",
                   style: TextStyle(
                       color: Colors.blueAccent,
                       fontSize: 30.0,
@@ -99,9 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
-                    "This application contaIns sign in button and sign out button"),
-
+                
                 //email textfield
                 const SizedBox(
                   height: 50,
@@ -110,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: const Color.fromARGB(255, 83, 80, 80),
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(
@@ -134,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: const Color.fromARGB(255, 83, 80, 80),
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(

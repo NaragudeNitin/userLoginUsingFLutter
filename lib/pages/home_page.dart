@@ -1,10 +1,14 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_cloud_messaging_flutter/firebase_cloud_messaging_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5_login_logout_signup/screens/add_note_screen.dart';
 import 'package:flutter_application_5_login_logout_signup/screens/pagination_screen.dart';
 import 'package:flutter_application_5_login_logout_signup/screens/search_screen.dart';
-import 'package:flutter_application_5_login_logout_signup/views/list_view.dart';
+import 'package:flutter_application_5_login_logout_signup/widgets/side_bar_menu.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,6 +23,32 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // getTas
     super.initState();
+
+    //gives you the message on which yousr taps
+    //and it opened the app from terminated state
+    FirebaseMessaging.instance.getInitialMessage().then((message){
+      if (message != null) {
+        final routeFromMessage = message.data['route'];
+        Navigator.of(context).pushNamed(routeFromMessage);
+      }
+    });
+
+    //only works in foreground
+    FirebaseMessaging.onMessage.listen((message) {
+      if(message.notification != null){
+        print(message.notification!.title);
+        print(message.notification!.body);
+      }
+      ///app in background and opened and user taps on notification
+      /// on the notification
+      FirebaseMessaging.onMessageOpenedApp.listen((message) {
+        final routeFromMessage = message.data['route'];
+        // print(routeFromMessage);
+
+        Navigator.of(context).pushNamed(routeFromMessage);
+      });
+
+    });
   }
 
   @override
@@ -43,43 +73,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    user.email!,
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              title: Row(
-                children: const [
-                  Text(
-                    'Logout',
-                    style: TextStyle(color: Colors.redAccent),
-                  ),
-                  Icon(Icons.logout)
-                ],
-              ),
-              // iconColor: Colors.redAccent,
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: const SideMenuBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -92,7 +86,7 @@ class _HomePageState extends State<HomePage> {
             setState(() {});
           });
         },
-        backgroundColor:const Color.fromARGB(255, 55, 72, 80),
+        backgroundColor: const Color.fromARGB(255, 55, 72, 80),
         child: const Icon(Icons.add),
       ),
 
@@ -118,5 +112,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-          

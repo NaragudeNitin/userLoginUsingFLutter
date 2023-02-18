@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -18,7 +17,7 @@ class Note {
 
     final description = data['description'];
 
-    log( '${" is iddddd" + title}dddd dddddddddddd' + description);
+    // log( '${" is iddddd" + title}dddd dddddddddddd' + description);
   }
 
 

@@ -88,55 +88,56 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
-    setState(() {
-      image = im;
-    });
-  }
+  // void selectImage() async {
+  //   Uint8List im = await pickImage(ImageSource.gallery);
+  //   setState(() {
+  //     image = im;
+  //   });
+  // }
 
-  pickImage(ImageSource source) async {
-    final ImagePicker imagePicker = ImagePicker();
-    XFile? file = await imagePicker.pickImage(source: source);
+  // pickImage(ImageSource source) async {
+  //   final ImagePicker imagePicker = ImagePicker();
+  //   XFile? file = await imagePicker.pickImage(source: source);
 
-    if (file != null) {
-      return await file.readAsBytes();
-    }
-    stdout.writeln('No Image Selected');
-  }
+  //   if (file != null) {
+  //     return await file.readAsBytes();
+  //   }
+  //   stdout.writeln('No Image Selected');
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: const Color.fromARGB(255, 97, 89, 89),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Stack(
-                  children: [
-                    image != null
-                        ? CircleAvatar(
-                            radius: 64,
-                            backgroundImage: MemoryImage(image!),
-                          )
-                        : const CircleAvatar(
-                            radius: 64,
-                            backgroundImage: NetworkImage(
-                                'https://picsum.photos/id/237/200/300'),
-                          ),
-                    Positioned(
-                        bottom: -10,
-                        left: 80,
-                        child: IconButton(
-                          onPressed: selectImage,
-                          icon: const Icon(Icons.add_a_photo),
-                          color: Colors.white,
-                        ))
-                  ],
-                ),
+                //add profile
+                // Stack(
+                //   children: [
+                //     image != null
+                //         ? CircleAvatar(
+                //             radius: 64,
+                //             backgroundImage: MemoryImage(image!),
+                //           )
+                //         : const CircleAvatar(
+                //             radius: 64,
+                //             backgroundImage: NetworkImage(
+                //                 'https://picsum.photos/id/237/200/300'),
+                //           ),
+                //     Positioned(
+                //         bottom: -10,
+                //         left: 80,
+                //         child: IconButton(
+                //           onPressed: selectImage,
+                //           icon: const Icon(Icons.add_a_photo),
+                //           color: Colors.white,
+                //         ),),
+                //   ],
+                // ),
                 //heading
                 const SizedBox(
                   height: 10,
@@ -146,14 +147,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   //style: GoogleFonts.bebasNeue(),
                   style: TextStyle(
                       color: Colors.blueAccent,
-                      fontSize: 30.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text("Register Yourself here"),
 
                 //first name TextField
                 const SizedBox(
@@ -163,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: const Color.fromARGB(255, 83, 80, 80),
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(
@@ -180,7 +177,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
 
                 //last name TextField
-
                 const SizedBox(
                   height: 20,
                 ),
@@ -188,7 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: const Color.fromARGB(255, 83, 80, 80),
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(
@@ -204,31 +200,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
 
-                //age editing text field
-
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(8.0)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        controller: _ageController,
-                        decoration: const InputDecoration(
-                          hintText: "Enter your age",
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
                 //email textfield
                 const SizedBox(
                   height: 20,
@@ -237,7 +208,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: const Color.fromARGB(255, 83, 80, 80),
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(
@@ -261,7 +232,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: const Color.fromARGB(255, 83, 80, 80),
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(
@@ -286,7 +257,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: const Color.fromARGB(255, 83, 80, 80),
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Padding(
@@ -304,7 +275,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
 
                 //sign up button
-
                 const SizedBox(
                   height: 20,
                 ),
@@ -329,6 +299,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
 
+                const SizedBox(height: 10,),
                 //not a user? register now
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

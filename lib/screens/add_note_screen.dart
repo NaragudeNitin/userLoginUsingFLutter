@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5_login_logout_signup/pages/home_page.dart';
+import 'package:flutter_application_5_login_logout_signup/widgets/side_bar_menu.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -50,15 +51,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+      ),
+      drawer: const SideMenuBar(),
       body: SafeArea(
+        
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               //note title field
-              // const SizedBox(
-              //   height: 50,
-              // ),
+              const SizedBox(height: 50,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Container(
@@ -78,7 +82,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
                 ),
               ),
-
+          
               //note description
               const SizedBox(
                 height: 5,
@@ -86,7 +90,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Expanded(
-                  child: Container(
+                  child: Container(height: 150,
                     decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 152, 145, 145),
                         border: Border.all(color: Colors.white),
@@ -106,9 +110,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
                 ),
               ),
-
+          
               //add task button
-
+          
               const SizedBox(
                 height: 20,
               ),

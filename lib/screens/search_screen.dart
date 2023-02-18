@@ -28,13 +28,13 @@ class _SearchScreenState extends State<SearchScreen> {
         .collection('tasks')
         .get();
 
-        print(result.docs.length);
+        // print(result.docs.length);
         
 
         final documents = result.docs;
         for (QueryDocumentSnapshot element in documents) {
         
-          print(".....................//////");
+          // print(".....................//////");
           final data = element.data() as Map<String, dynamic>;
 
           final title = data['title'];
