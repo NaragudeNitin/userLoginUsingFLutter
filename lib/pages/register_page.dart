@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,62 +47,62 @@ class _RegisterPageState extends State<RegisterPage> {
       );
 
       //add user details
-      await addUserDetails(
-          _firstNameController.text.trim(),
-          _lastNameController.text.trim(),
-          int.parse(_ageController.text.trim()),
-          _emailController.text.trim());
+      await addUserDetails(_firstNameController.text.trim(),
+          _lastNameController.text.trim(), _emailController.text.trim());
     }
 
     // if (mounted) {
-    //  Navigator.pop(context);
-    // }
-
-    // setState(() {
-    //   Navigator.pop(context);
-    // });
   }
 
   Future<void> addUserDetails(
-      String firstName, String lastName, int age, String email) async {
-    final imageUrl =
-        await StorageMethod().uploadImageStorage("profileImage", image!);
-
-    // FirebaseFirestore.instance.collection("users").doc();
-    await FirebaseFirestore.instance.collection('users').add({
-      'first name': firstName,
-      'last name': lastName,
-      'age': age,
-      'email': email,
-      'imageUrl': imageUrl,
-    });
-  }
-
-  bool passwordConfirm() {
-    if (_passwordController.text.trim() ==
-        _confirmPasswordController.text.trim()) {
-      return true;
+      String firstName, String lastName, String email) async {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final document = FirebaseFirestore.instance.collection("users").doc(uid);
+    if (image != null) {
+      final imageUrl =
+          await StorageMethod().uploadImageStorage("profileImage", image!);
+      document.set({
+        'first name': firstName,
+        'last name': lastName,
+        'email': email,
+        'imageUrl': imageUrl,
+      });
     } else {
-      return false;
+      
+      document.set({
+        'first name': firstName,
+        'last name': lastName,
+        'email': email,
+      });
     }
   }
 
-  // void selectImage() async {
-  //   Uint8List im = await pickImage(ImageSource.gallery);
-  //   setState(() {
-  //     image = im;
-  //   });
-  // }
+  bool passwordConfirm() {
+    return (_passwordController.text.trim() ==
+        _confirmPasswordController.text.trim());
+  }
 
-  // pickImage(ImageSource source) async {
-  //   final ImagePicker imagePicker = ImagePicker();
-  //   XFile? file = await imagePicker.pickImage(source: source);
+  void selectImage() async {
+    Uint8List? im = await pickImage(ImageSource.gallery);
+    if (im != null) {
+      setState(() {
+        image = im;
+      });
+    }
+  }
 
-  //   if (file != null) {
-  //     return await file.readAsBytes();
-  //   }
-  //   stdout.writeln('No Image Selected');
-  // }
+  Future<Uint8List?> pickImage(ImageSource source) async {
+    final ImagePicker imagePicker = ImagePicker();
+    XFile? file = await imagePicker.pickImage(source: source);
+
+    if (file != null) {
+      return await file.readAsBytes();
+    }
+    // const AlertDialog(
+    //   title: Text("Image Not picked"),
+    // );
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,29 +114,30 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                //add profile
-                // Stack(
-                //   children: [
-                //     image != null
-                //         ? CircleAvatar(
-                //             radius: 64,
-                //             backgroundImage: MemoryImage(image!),
-                //           )
-                //         : const CircleAvatar(
-                //             radius: 64,
-                //             backgroundImage: NetworkImage(
-                //                 'https://picsum.photos/id/237/200/300'),
-                //           ),
-                //     Positioned(
-                //         bottom: -10,
-                //         left: 80,
-                //         child: IconButton(
-                //           onPressed: selectImage,
-                //           icon: const Icon(Icons.add_a_photo),
-                //           color: Colors.white,
-                //         ),),
-                //   ],
-                // ),
+                // add profile
+                Stack(
+                  children: [
+                    image != null
+                        ? CircleAvatar(
+                            radius: 64,
+                            backgroundImage: MemoryImage(image!),
+                          )
+                        : const CircleAvatar(
+                            radius: 64,
+                            backgroundImage: NetworkImage(
+                                'https://picsum.photos/id/237/200/300'),
+                          ),
+                    Positioned(
+                      bottom: -10,
+                      left: 80,
+                      child: IconButton(
+                        onPressed: selectImage,
+                        icon: const Icon(Icons.add_a_photo),
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
                 //heading
                 const SizedBox(
                   height: 10,
@@ -299,7 +299,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
 
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 //not a user? register now
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

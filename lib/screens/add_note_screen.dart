@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_5_login_logout_signup/auth/repository.dart';
 import 'package:flutter_application_5_login_logout_signup/pages/home_page.dart';
 import 'package:flutter_application_5_login_logout_signup/widgets/side_bar_menu.dart';
 
@@ -27,18 +28,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   // ignore: non_constant_identifier_names
   Future AddTaskDetails(String noteTitle, String noteDetails) async {
-    CollectionReference ref = FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection("tasks");
 
-    var data = {
-      'title': noteTitle,
-      'description': noteDetails,
-      'created': DateTime.now(),
-    };
-
-    ref.add(data);
+    await Repository.instance.addNote(noteTitle, noteDetails, DateTime.now());
   }
 
   @override
@@ -63,23 +54,36 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             children: <Widget>[
               //note title field
               const SizedBox(height: 50,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 152, 145, 145),
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(8.0)),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: TextFormField(
-                      controller: _titleController,
-                      decoration: const InputDecoration(
-                        hintText: "Note title",
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 10),
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //         color: const Color.fromARGB(255, 152, 145, 145),
+              //         border: Border.all(color: Colors.white),
+              //         borderRadius: BorderRadius.circular(8.0)),
+              //     child: Padding(
+              //       padding: const EdgeInsets.only(left: 20),
+              //       child: TextFormField(
+              //         controller: _titleController,
+              //         decoration: const InputDecoration(
+              //           hintText: "Note title",
+              //           border: InputBorder.none,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              
+              TextFormField(
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  hintText: 'note title'
+                ),
+              ),
+              TextFormField(
+                controller: _textController,
+                decoration: const InputDecoration(
+                  hintText: 'note title'
                 ),
               ),
           
@@ -87,29 +91,29 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               const SizedBox(
                 height: 5,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Expanded(
-                  child: Container(height: 150,
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 152, 145, 145),
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(8.0)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: TextField(
-                        maxLines: null,
-                        // expands: true,
-                        controller: _textController,
-                        decoration: const InputDecoration(
-                          hintText: "Note descriptiion ",
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 10),
+              //   child: Expanded(
+              //     child: Container(height: 150,
+              //       decoration: BoxDecoration(
+              //           color: const Color.fromARGB(255, 152, 145, 145),
+              //           border: Border.all(color: Colors.white),
+              //           borderRadius: BorderRadius.circular(8.0)),
+              //       child: Padding(
+              //         padding: const EdgeInsets.only(left: 8.0),
+              //         child: TextField(
+              //           maxLines: null,
+              //           // expands: true,
+              //           controller: _textController,
+              //           decoration: const InputDecoration(
+              //             hintText: "Note descriptiion ",
+              //             border: InputBorder.none,
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
           
               //add task button
           

@@ -13,6 +13,8 @@ class MainPage extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(), 
         builder: (context, snapshot) {
+          // print(snapshot.data!.uid);
+          // FirebaseAuth.instance.signOut();
         if (snapshot.hasData) {
           return const HomePage();
         }

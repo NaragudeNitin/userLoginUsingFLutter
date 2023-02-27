@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_5_login_logout_signup/auth/repository.dart';
 
-import 'notification_screen.dart';
+import '../model/note.dart';
 
 class UpdateNoteScreen extends StatefulWidget {
-  final Map data1;
-  final String time;
-  final DocumentReference ref;
+  final Note note;
 
-  const UpdateNoteScreen(this.data1, this.time, this.ref, {super.key});
+
+   UpdateNoteScreen({super.key, required this.note,});
+
 
   @override
   State<UpdateNoteScreen> createState() => _UpdateNoteScreenState();
@@ -24,8 +25,8 @@ class _UpdateNoteScreenState extends State<UpdateNoteScreen> {
 
   @override
   void initState() {
-    titletexteditingController.text = widget.data1['title'];
-    descriptiontexteditingController.text = widget.data1['description'];
+    titletexteditingController.text = widget.note.title;
+    descriptiontexteditingController.text = widget.note.description;
     super.initState();
   }
 
@@ -102,24 +103,14 @@ class _UpdateNoteScreenState extends State<UpdateNoteScreen> {
                             size: 24.0,
                           ),
                         ),
-                        //
-                        const SizedBox(
-                          width: 8.0,
-                        ),
-
+                        //archive button
                         ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SetNotification(
-                                    title: 'Add Notification',
-                                  ),
-                                ));
+                          onPressed: /* archiveItems */() {
+                            
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                              Colors.grey[700],
+                              Colors.blueGrey[300],
                             ),
                             padding: MaterialStateProperty.all(
                               const EdgeInsets.symmetric(
@@ -129,11 +120,15 @@ class _UpdateNoteScreenState extends State<UpdateNoteScreen> {
                             ),
                           ),
                           child: const Icon(
-                            Icons.notification_add,
+                            Icons.archive,
                             size: 24.0,
                           ),
                         ),
-                        //
+                        
+                        const SizedBox(
+                          width: 8.0,
+                        ),
+                        //delete button
                         ElevatedButton(
                           onPressed: delete,
                           style: ButtonStyle(
@@ -194,7 +189,7 @@ class _UpdateNoteScreenState extends State<UpdateNoteScreen> {
                           bottom: 12.0,
                         ),
                         child: Text(
-                          widget.time,
+                          widget.note.createdAt.toString(),
                           style: const TextStyle(
                             fontSize: 20.0,
                             fontFamily: "lato",
@@ -239,18 +234,29 @@ class _UpdateNoteScreenState extends State<UpdateNoteScreen> {
 
   void delete() async {
     // delete from db
-    await widget.ref.delete();
+
+    Repository.instance.deleteNote(widget.note.id);
   }
 
   void save() async {
+
+
+    final note = widget.note.copyWith(title: titletexteditingController.text, description: descriptiontexteditingController.text);
+    Repository.instance.updateNote(note);
     if (key.currentState!.validate()) {
       // TODo : showing any kind of alert that new changes have been saved
-      await widget.ref.update(
-        {
-          'title': titletexteditingController.text,
-          'description': descriptiontexteditingController.text
-        },
-      );
+      // await widget.ref.update(
+      //   {
+      //     'title': titletexteditingController.text,
+      //     'description': descriptiontexteditingController.text
+      //   },
+      // );
     }
   }
+
+  void archiveItems(Note item)async{
+  setState(() {
+    //item.isArchived = true;
+  });
+} 
 }

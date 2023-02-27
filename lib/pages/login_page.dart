@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5_login_logout_signup/pages/forgot_password_page.dart';
+import 'package:flutter_application_5_login_logout_signup/services/auth_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 // late final String finalEmail;
@@ -45,12 +46,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future signIn() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage(),));
-    } on FirebaseAuthException {
+      await AuthService.signIn(email, password);
+    } on IncorrectPasswordAndEmailException catch (e) {
       showDialog(
           context: context,
           builder: (context) {
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                
+
                 //email textfield
                 const SizedBox(
                   height: 50,

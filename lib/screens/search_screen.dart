@@ -32,19 +32,21 @@ class _SearchScreenState extends State<SearchScreen> {
         
 
         final documents = result.docs;
-        for (QueryDocumentSnapshot element in documents) {
+
+        items = result.docs.map((e) => Note.fromMap(e)).toList();
+        // for (QueryDocumentSnapshot element in documents) {
         
-          // print(".....................//////");
-          final data = element.data() as Map<String, dynamic>;
+        //   // print(".....................//////");
+        //   final data = element.data() as Map<String, dynamic>;
 
-          final title = data['title'];
-          final description = data['description'];
-          final note = Note(title: title, description: description);
-          items.add(note);
+        //   final title = data['title'];
+        //   final description = data['description'];
+        //   final note = Note(title: title, description: description, isArchived: false);
+        //   items.add(note);
 
-          // print(data['title']);
+        //   // print(data['title']);
 
-        }
+        // }
   }
 
   void searchFromFirebase(String query) async {

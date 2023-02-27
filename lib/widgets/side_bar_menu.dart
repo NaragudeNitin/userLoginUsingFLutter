@@ -18,12 +18,10 @@ class SideMenuBar extends StatefulWidget {
 }
 
 class _SideMenuBarState extends State<SideMenuBar> {
-
   final user = FirebaseAuth.instance.currentUser;
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
   String? profilePicLink;
-
 
   Future pickUploadProfilePic() async {
     final image = await ImagePicker().pickImage(
@@ -34,15 +32,14 @@ class _SideMenuBarState extends State<SideMenuBar> {
     );
 
     Reference ref = FirebaseStorage.instance.ref().child("profilepic.jpg");
-    if(image == null )return ;
+    if (image == null) return;
     await ref.putFile(File(image.path));
 
     ref.getDownloadURL().then((value) async {
       FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser?.uid)
-          .collection('images')
-          .add({'imageUrl': value});
+          .update({'imageUrl': value});
       setState(() {
         profilePicLink = value;
       });
@@ -53,12 +50,12 @@ class _SideMenuBarState extends State<SideMenuBar> {
     FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection('images')
         .get()
         .then((snapshot) {
+      final map = snapshot.data() ?? <String, dynamic>{};
 
-      if(snapshot.docs.first.exists){
-        final imageUrl = snapshot.docs.first.data()['imageUrl'];
+      if (map.containsKey('imageUrl')) {
+        final imageUrl = map['imageUrl'];
         setState(() {
           profilePicLink = imageUrl;
         });

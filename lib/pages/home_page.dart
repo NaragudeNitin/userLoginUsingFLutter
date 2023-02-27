@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_5_login_logout_signup/screens/add_note_screen.dart';
 import 'package:flutter_application_5_login_logout_signup/screens/pagination_screen.dart';
 import 'package:flutter_application_5_login_logout_signup/screens/search_screen.dart';
+import 'package:flutter_application_5_login_logout_signup/services/local_notification_service.dart';
 import 'package:flutter_application_5_login_logout_signup/widgets/side_bar_menu.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 
     //gives you the message on which yousr taps
     //and it opened the app from terminated state
-    FirebaseMessaging.instance.getInitialMessage().then((message){
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
       if (message != null) {
         final routeFromMessage = message.data['route'];
         Navigator.of(context).pushNamed(routeFromMessage);
@@ -35,19 +36,21 @@ class _HomePageState extends State<HomePage> {
 
     //only works in foreground
     FirebaseMessaging.onMessage.listen((message) {
-      if(message.notification != null){
+      if (message.notification != null) {
         print(message.notification!.title);
         print(message.notification!.body);
       }
-      ///app in background and opened and user taps on notification
-      /// on the notification
-      FirebaseMessaging.onMessageOpenedApp.listen((message) {
-        final routeFromMessage = message.data['route'];
-        // print(routeFromMessage);
 
-        Navigator.of(context).pushNamed(routeFromMessage);
-      });
+      LocalNotificationService.display(message);
+    });
 
+    ///app in background and opened and user taps on notification
+    /// on the notification
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      final routeFromMessage = message.data['route'];
+      // print(routeFromMessage);
+
+      Navigator.of(context).pushNamed(routeFromMessage);
     });
   }
 
