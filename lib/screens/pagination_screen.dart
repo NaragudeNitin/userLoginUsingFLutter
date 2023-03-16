@@ -39,6 +39,7 @@ class _PaginatedListState extends State<PaginatedList> {
   }
 
   void paginatedData() async {
+    log("1111111111111111111111111111");
     if (isMoreData) {
       setState(() {
         isLoadingData = true;
@@ -46,15 +47,18 @@ class _PaginatedListState extends State<PaginatedList> {
       final ref = this.ref;
       late QuerySnapshot<Map<String, dynamic>>? querySnapshot;
       if (lastDocument == null) {
+        log("22222222222222222222222");
+        list = [];
         querySnapshot =
-            (await ref.limit(10).get()) as QuerySnapshot<Map<String, dynamic>>?;
+            (await ref.where('isDeleted',isEqualTo: false).where('isArchive',isEqualTo: false). limit(10).get()) as QuerySnapshot<Map<String, dynamic>>?;
       } else {
-        querySnapshot = (await ref
+        log("4444444444444444444444444");
+        querySnapshot = (await ref.where('isDeleted',isEqualTo: false).where('isArchive',isEqualTo: false)
             .limit(10)
             .startAfterDocument(lastDocument!)
             .get()) as QuerySnapshot<Map<String, dynamic>>?;
       }
-
+      log("33333333333333333333");
       if (querySnapshot!.docs.isNotEmpty) {
         // print("...........................");
         lastDocument = querySnapshot.docs.last;
@@ -66,6 +70,7 @@ class _PaginatedListState extends State<PaginatedList> {
 
      list.addAll(notes);
       //list.addAll(querySnapshot.docs.map((e) => e.data()));
+      log(' this is list lenght after add all${list.length.toString()}');
       setState(() {
         isLoadingData = false;
       });
@@ -87,20 +92,20 @@ class _PaginatedListState extends State<PaginatedList> {
             itemCount: list.length,
             itemBuilder: (context, index) {
               final note = list[index];
-              // Map data = index.data!.docs[index].data() as Map;
-              // DateTime? myDateTime = data['created'].toDate();
-              // String formatedDateTime =
-              //     DateFormat.yMMMd().add_jm().format(myDateTime!);
               return ListTile(
-                onTap: () {
-                  Navigator.of(context)
+                onTap: () async{
+                  await Navigator.of(context)
                       .push(
                     MaterialPageRoute(
                       builder: (context) => UpdateNoteScreen(note: note,)
                     ),
                   )
                       .then((value) {
-                    setState(() {});
+                        log("inside then.......");
+                    lastDocument = null ;
+                    isMoreData = true;
+                    paginatedData();
+                    
                   });
                 },
                 title: Text(note.title),

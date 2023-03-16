@@ -25,28 +25,10 @@ class _SearchScreenState extends State<SearchScreen> {
     final result = await FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('tasks')
+        .collection('notes')
         .get();
-
-        // print(result.docs.length);
-        
-
         final documents = result.docs;
-
-        items = result.docs.map((e) => Note.fromMap(e)).toList();
-        // for (QueryDocumentSnapshot element in documents) {
-        
-        //   // print(".....................//////");
-        //   final data = element.data() as Map<String, dynamic>;
-
-        //   final title = data['title'];
-        //   final description = data['description'];
-        //   final note = Note(title: title, description: description, isArchived: false);
-        //   items.add(note);
-
-        //   // print(data['title']);
-
-        // }
+        items = documents.map((e) => Note.fromMap(e)).toList();
   }
 
   void searchFromFirebase(String query) async {

@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 
 import '../model/note.dart';
 
-class ArchieveNoteList extends StatefulWidget {
-  const ArchieveNoteList({super.key});
+class TrashList extends StatefulWidget {
+  const TrashList({super.key});
 
   @override
-  State<ArchieveNoteList> createState() => _ArchieveNoteListState();
+  State<TrashList> createState() => _TrashListState();
 }
 
-class _ArchieveNoteListState extends State<ArchieveNoteList> {
+class _TrashListState extends State<TrashList> {
   CollectionReference ref = FirebaseFirestore.instance
       .collection('users')
       .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -44,10 +44,13 @@ class _ArchieveNoteListState extends State<ArchieveNoteList> {
       late QuerySnapshot<Map<String, dynamic>>? querySnapshot;
       if (lastDocument == null) {
         list = [];
-        querySnapshot =
-            (await ref.where('isDeleted',isEqualTo: false).where('isArchive',isEqualTo: true). limit(10).get()) as QuerySnapshot<Map<String, dynamic>>?;
+        querySnapshot = (await ref
+            .where('isDeleted', isEqualTo: true)
+            .limit(10)
+            .get()) as QuerySnapshot<Map<String, dynamic>>?;
       } else {
-        querySnapshot = (await ref.where('isDeleted',isEqualTo: false).where('isArchive',isEqualTo: true)
+        querySnapshot = (await ref
+            .where('isDeleted', isEqualTo: true)
             .limit(10)
             .startAfterDocument(lastDocument!)
             .get()) as QuerySnapshot<Map<String, dynamic>>?;
@@ -56,10 +59,10 @@ class _ArchieveNoteListState extends State<ArchieveNoteList> {
         lastDocument = querySnapshot.docs.last;
       }
 
-     final notes = querySnapshot.docs.map((e) => Note.fromMap(e)).toList();
-     log(' this is notez lenght${notes.length.toString()}');
+      final notes = querySnapshot.docs.map((e) => Note.fromMap(e)).toList();
+      log(' this is notez lenght${notes.length.toString()}');
 
-     list.addAll(notes);
+      list.addAll(notes);
       //list.addAll(querySnapshot.docs.map((e) => e.data()));
       log(' this is list lenght after add all${list.length.toString()}');
       setState(() {
@@ -79,23 +82,13 @@ class _ArchieveNoteListState extends State<ArchieveNoteList> {
       appBar: AppBar(
         actions: [
           ElevatedButton(
-            onPressed:() {
-              Navigator.pop(context);             
-              },
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    Colors.blueGrey[300],
-                  ),
-                   padding: MaterialStateProperty.all(
-                      const EdgeInsets.symmetric(
-                        horizontal: 15.0,
-                        vertical: 8.0,
-                      ),
-                    ),
-              ), child: null,
-            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: null,
+          ),
         ],
-        title: const Text("Archives"),
+        title: const Text("Trash Bin"),
       ),
       body: Column(
         children: [
@@ -106,8 +99,7 @@ class _ArchieveNoteListState extends State<ArchieveNoteList> {
               itemBuilder: (context, index) {
                 final note = list[index];
                 return ListTile(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   title: Text(note.title),
                   subtitle: Text(note.description),
                 );

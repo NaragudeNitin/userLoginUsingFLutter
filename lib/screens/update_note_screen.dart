@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5_login_logout_signup/auth/repository.dart';
 
@@ -8,7 +7,7 @@ class UpdateNoteScreen extends StatefulWidget {
   final Note note;
 
 
-   UpdateNoteScreen({super.key, required this.note,});
+   const UpdateNoteScreen({super.key, required this.note,});
 
 
   @override
@@ -106,7 +105,8 @@ class _UpdateNoteScreenState extends State<UpdateNoteScreen> {
                         //archive button
                         ElevatedButton(
                           onPressed: /* archiveItems */() {
-                            
+                            Repository.instance.updateIsArchive(widget.note);
+                    
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(

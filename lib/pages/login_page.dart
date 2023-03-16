@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5_login_logout_signup/pages/forgot_password_page.dart';
@@ -38,7 +39,19 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       // Once signed in, return the UserCredential
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      final firebaseUserCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      final user = firebaseUserCredential.user!;
+      final document = FirebaseFirestore.instance.collection("users").doc(user.uid);
+
+      final email = user.email;
+      final firstName = user.displayName ?? " ";
+
+      
+      document.set({
+        'first name': firstName,
+        'last name': " ",
+        'email': email,
+      });
     } catch (err, stk) {
       log(err.toString());
       log(stk.toString());
@@ -54,8 +67,8 @@ class _LoginPageState extends State<LoginPage> {
       showDialog(
           context: context,
           builder: (context) {
-            return const AlertDialog(
-              content: Text("incorrect password or email address!!"),
+            return  AlertDialog(
+              content: Text("incorrect password or email address!!\n $e"),
             );
           });
     }

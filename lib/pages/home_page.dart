@@ -3,7 +3,6 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_cloud_messaging_flutter/firebase_cloud_messaging_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_5_login_logout_signup/screens/add_note_screen.dart';
 import 'package:flutter_application_5_login_logout_signup/screens/pagination_screen.dart';

@@ -1,8 +1,10 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_5_login_logout_signup/screens/archive_screen.dart';
+import 'package:flutter_application_5_login_logout_signup/screens/delete_note_screen.dart';
+import 'package:flutter_application_5_login_logout_signup/views/pie_chart.dart';
 import 'package:flutter_application_5_login_logout_signup/views/web_view_page.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,7 +20,14 @@ class SideMenuBar extends StatefulWidget {
 }
 
 class _SideMenuBarState extends State<SideMenuBar> {
-  final user = FirebaseAuth.instance.currentUser;
+  String get email { 
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return user.email ?? ' ';
+    }
+    return '';
+  
+  }
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
   String? profilePicLink;
@@ -85,28 +94,26 @@ class _SideMenuBarState extends State<SideMenuBar> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      pickUploadProfilePic();
-                    });
+                    pickUploadProfilePic();
                   },
-                  child: CircleAvatar(
+                  child: profilePicLink != null ? CircleAvatar(
                     radius: 50,
-                    child: profilePicLink == null
-                        ? const Icon(
+                    backgroundImage:  NetworkImage(
+                          profilePicLink!,
+                          // fit: BoxFit.contain,
+
+                        ) ,
+                    
+                  ): const CircleAvatar(
+                    radius: 40,
+                    child: Icon(
                             Icons.person,
-                            size: 80,
-                          )
-                        : CircleAvatar(
-                            radius: 40,
-                            child: Image.network(
-                              profilePicLink!,
-                              fit: BoxFit.contain,
-                            ),
+                            size: 50,
                           ),
                   ),
                 ),
                 Text(
-                  user!.email!,
+                  email,
                   style: const TextStyle(fontSize: 15),
                 ),
               ],
@@ -137,17 +144,44 @@ class _SideMenuBarState extends State<SideMenuBar> {
               'Archive',
               style: TextStyle(fontSize: 18),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => const ArchieveNoteList(),));
+            },
           ),
 
-          //reminder
+          //PieData
           ListTile(
-              leading: const Icon(Icons.remember_me),
-              title: const Text(
-                'Add Remainder',
-                style: TextStyle(fontSize: 18),
-              ),
-              onTap: () {}),
+            leading: const Icon(Icons.pie_chart),
+            title: const Text(
+              'Pie Chart',
+              style: TextStyle(fontSize: 18),
+            ),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PieChart(),
+                ),
+              );
+            },
+          ),
+
+
+          //soft deletes
+          ListTile(
+            leading: const Icon(Icons.delete),
+            title: const Text(
+              'Deleted Items',
+              style: TextStyle(fontSize: 18),
+            ),
+            onTap: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => const TrashList(),));
+            },
+          ),
 
           //terms and condition/ webview
           ListTile(
